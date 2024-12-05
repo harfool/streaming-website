@@ -1,0 +1,28 @@
+{
+  "name": "stream-video-website",
+  "version": "1.0.0",
+  "description": "youtube like platform where video steram",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "javascript",
+    "node",
+    "express",
+    "mongoDB"
+  ],
+  "author": "harfool gujjar",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1",
+    "mongoose": "^8.8.3"
+  }
+}
