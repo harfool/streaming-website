@@ -6,7 +6,7 @@ import ApiResponce from "./../utils/ApiResponse.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const { userName, fullName, email, password } = req.body;
-
+  console.log("req.body" ,req.body)
   // Validate fields
   if (
     [userName, fullName, email, password].some(
@@ -28,7 +28,8 @@ const registerUser = asyncHandler(async (req, res) => {
   // Get local file paths
   const avatarLocalPath = req.files?.avatar?.[0]?.path;
   const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
-  console.log("avater succussfully upload  in local path",avatarLocalPath)
+  // console.log("avater succussfully upload  in local path",avatarLocalPath)
+ 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar file is required");
   }
@@ -61,8 +62,8 @@ const registerUser = asyncHandler(async (req, res) => {
     console.warn("No cover image provided. Proceeding without it.");
     coverImage = { url: "" };
   }
-  console.log("Avatar upload response:", avatar.url);
-  console.log("Cover image upload response:", coverImage.url);
+  // console.log("Avatar upload response:", avatar.url);
+  // console.log("Cover image upload response:", coverImage.url);
 
 
 
