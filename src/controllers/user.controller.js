@@ -25,7 +25,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { userName, fullName, email, password } = req.body;
-  console.log("req.body", req.body);
+  // console.log("req.body", req.body);
   // Validate fields
   if (
     [userName, fullName, email, password].some(
@@ -121,7 +121,7 @@ const loginUser = asyncHandler(async (res, req) => {
   //send cookie
 
   const { email, password, userName } = req.body;
-  if (!email || !userName) {
+  if (!email && !userName) {
     throw new ApiError(400, "username and email is required");
   }
 
@@ -162,4 +162,32 @@ return res.status(200)
 )
 });
 
-export {registerUser , loginUser} 
+const logOutUser = asyncHandler(async(req , res) =>{
+await User.findByIdAndUpdate(
+  req.user._id,
+  {
+    $set : {
+      refreshToken : undefined
+    }
+  },
+  {
+    new : true
+  }
+
+)
+
+const options = {
+  httpOnly : true,
+  secure : true
+}
+
+return res
+.status(200)
+.clearCookie("accessToken" , options)
+.clearCookie("refreshToken" , options)
+.json(new ApiResponce(200, {} , "User logged Out"))
+
+
+})
+
+export {registerUser , loginUser , logOutUser} 
