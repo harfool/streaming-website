@@ -4,6 +4,7 @@ import { User } from "./../models/user.models.js";
 import uploadOnCloudinary from "./../utils/cloudinary.js";
 import ApiResponce from "./../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -417,14 +418,65 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     },
   ]);
 
-  console.log(channel)
+  console.log(channel);
 
   if (!channel?.length) {
-    throw new ApiError(404 , "channel does not exists")
+    throw new ApiError(404, "channel does not exists");
   }
 
-  return res.status(200)
-  .json (new ApiResponce(200 , channel[0] , "user channel fatched successfully"))
+  return res
+    .status(200)
+    .json(
+      new ApiResponce(200, channel[0], "user channel fatched successfully")
+    );
+});
+
+const getUserVideoHistory = asyncHandler(async (req, res) => {
+  const user = await User.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.user._id),
+      },
+    },
+    {
+      $lookup: {
+        from: "videos",
+        foreignField: "_id",
+        localField: "watchHistory",
+        as: "watchHistory",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
+              as: "owner",
+              pipeline: [
+                {
+                  $project: {
+                    fullName: 1,
+                    userName: 1,
+                    avatar: 1,
+                  },
+                },
+
+              ],
+            },
+          },
+          {
+            $addFields :{
+              owner : {
+                $first : "$owner"
+              }
+            }
+          }
+        ],
+      },
+    },
+  ]);
+
+ return res. status(200)
+ .json(new ApiResponce(200 , user[0].watchHistory , "watch history fetched succesfully"))
 
 });
 
@@ -439,4 +491,5 @@ export {
   updateUserAvatar,
   updateUserCoverImage,
   getUserChannelProfile,
+  getUserVideoHistory,
 };
