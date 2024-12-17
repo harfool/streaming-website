@@ -170,12 +170,17 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logOutUser = asyncHandler(async (req, res) => {
+ 
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: {
-        refreshToken: undefined,
-      },
+      // $set: {
+      //   refreshToken: undefined,
+     // this is also correct but some time give errors
+      // },
+      $unset : {
+        refreshToken: 1 // this removes the filed form document
+      }
     },
     {
       new: true,
@@ -261,7 +266,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     .json(new ApiResponce(200, {}, "Password change successfully"));
 });
 
-const getCurrentUser = asyncHandler(async (_, res) => {
+const getCurrentUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponce(200, req.user, "Current user fetched successfully "));
