@@ -1,0 +1,13 @@
+@echo off
+echo Starting Streaming Website...
+echo.
+echo Starting Backend Server...
+start cmd /k "cd /d %~dp0 && npm run dev"
+echo.
+echo Starting Frontend Server...
+start cmd /k "cd /d %~dp0\client && npm start"
+echo.
+echo Both servers are starting...
+echo Backend will run on http://localhost:8000
+echo Frontend will run on http://localhost:3000
+pause
