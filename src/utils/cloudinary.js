@@ -8,11 +8,7 @@ import fs from "fs";
 // });
 
 // Configuration
-cloudinary.config({
-  cloud_name: "df2maejnd",
-  api_key: "347619653134964",
-  api_secret: "hVkEmTo86C5COBuzpMcNCWWttgA",
-});
+
 
 const uploadOnCloudinary = async (filePath) => {
   try {
